@@ -2,6 +2,8 @@
 cloud functionosの検証  
 
 ## Usage
+事前にcloud functionsとsecret managerを取り扱う権限を持ったサービスアカウントを用意する
+
 デプロイ用のコマンド  
 ```
 gcloud functions deploy デプロイ名 \
