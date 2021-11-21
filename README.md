@@ -3,6 +3,7 @@ cloud functionosの検証
 
 ## Usage
 事前にcloud functionsとsecret managerを取り扱う権限を持ったサービスアカウントを用意する
+- secret managerについてはversion操作の権限付与を忘れないように
 
 デプロイ用のコマンド  
 ```
@@ -18,6 +19,7 @@ gcloud functions deploy デプロイ名 \
 ```
 
 ## Reference
+- [Secret Managerのサンプル](https://cloud.google.com/secret-manager/docs/samples/secretmanager-access-secret-version)
 - [Python Client for Secret Manager API](https://googleapis.dev/python/secretmanager/latest/index.html)
 - [Python Client for Secret Manager API (Beta)](https://googleapis.dev/python/secretmanager/0.1.1/index.html)
 - [Secret Manager に保存した機密情報を、Cloud Functions の Python コードから取得してみた。](https://dev.classmethod.jp/articles/secret-manager-access-from-cloudfunctions-python/)

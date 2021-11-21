@@ -7,21 +7,26 @@ def access_secret_version(project_id, secret_id, version_id='latest'):
     client = secretmanager.SecretManagerServiceClient()
 
     # Build the resource name of the secret version.
-    parent_name = client.secret_version_path(project_id, secret_id)
+    parent = client.secret_path(project_id, secret_id)
     name = client.secret_version_path(project_id, secret_id, version_id)
 
     # Access the secret version.
-    response = client.access_secret_version(name)
+    # NOTE: latestのversionがDISABLEの場合，コケる
+    response = client.access_secret_version(request={"name": name})
 
     # Print the secret payload.
     payload = response.payload.data.decode("UTF-8")
-    print("Plaintext: {}".format(payload))
+    print("payload : {}".format(payload))
 
-    # Update the secret payload
+    # List up secret version
+    for version in client.list_secret_versions(request={"parent": parent}):
+        # NOTE: stateは1: ENABLE, 2: DISABLE, 3: DESTROYを指す
+        print("Found secret version: {}, state: {}".format(version.name, version.state))
+
+    # Add the secret payload
     new_payload = str(int(payload) + 1)
-    response = client.destroy_secret_version(name)
-    response = client.add_secret_version(parent_name, {'data': new_payload.encode('utf-8')})
-    
+    response = client.add_secret_version(request = {'parent': parent, 'payload': {'data': new_payload.encode('utf-8')}})
+
     # Print the new secret version name.
     print('Added secret version: {}'.format(response.name))
 
