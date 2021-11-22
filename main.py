@@ -1,6 +1,5 @@
 from google.cloud import secretmanager
 import os
-import shutil
 
 def access_secret_version(project_id, secret_id, version_id='latest'):
     # Create the Secret Manager client.
@@ -25,6 +24,8 @@ def access_secret_version(project_id, secret_id, version_id='latest'):
 
     # Add the secret payload
     new_payload = str(int(payload) + 1)
+    v_response = client.get_secret_version(request={'name': name})
+    response = client.disable_secret_version(request={'name': v_response.name})
     response = client.add_secret_version(request = {'parent': parent, 'payload': {'data': new_payload.encode('utf-8')}})
 
     # Print the new secret version name.
